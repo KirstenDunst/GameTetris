@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "TetrisView.h"
 
 @interface ViewController ()
 
@@ -17,6 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    TetrisView *tetrisVie = [[TetrisView alloc]initWithFrame:self.view.frame];
+    [self.view addSubview:tetrisVie];
+    
 }
 
 
