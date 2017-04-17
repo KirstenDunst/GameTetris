@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F6250851EA467BB00EE0B30 /* TetrisOther.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F6250841EA467BB00EE0B30 /* TetrisOther.m */; };
 		1F64B9D41EA1CC8E0013810A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F64B9D31EA1CC8E0013810A /* main.m */; };
 		1F64B9D71EA1CC8E0013810A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F64B9D61EA1CC8E0013810A /* AppDelegate.m */; };
 		1F64B9DA1EA1CC8E0013810A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F64B9D91EA1CC8E0013810A /* ViewController.m */; };
@@ -14,10 +15,11 @@
 		1F64B9DF1EA1CC8E0013810A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F64B9DE1EA1CC8E0013810A /* Assets.xcassets */; };
 		1F64B9E21EA1CC8E0013810A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F64B9E01EA1CC8E0013810A /* LaunchScreen.storyboard */; };
 		1F64B9EB1EA1CF6D0013810A /* TetrisView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F64B9EA1EA1CF6D0013810A /* TetrisView.m */; };
-		1F64B9EE1EA225600013810A /* CellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F64B9ED1EA225600013810A /* CellView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F6250831EA467BB00EE0B30 /* TetrisOther.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TetrisOther.h; sourceTree = "<group>"; };
+		1F6250841EA467BB00EE0B30 /* TetrisOther.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TetrisOther.m; sourceTree = "<group>"; };
 		1F64B9CF1EA1CC8E0013810A /* Tetris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tetris.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F64B9D31EA1CC8E0013810A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1F64B9D51EA1CC8E0013810A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -30,8 +32,6 @@
 		1F64B9E31EA1CC8E0013810A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F64B9E91EA1CF6D0013810A /* TetrisView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TetrisView.h; sourceTree = "<group>"; };
 		1F64B9EA1EA1CF6D0013810A /* TetrisView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TetrisView.m; sourceTree = "<group>"; };
-		1F64B9EC1EA225600013810A /* CellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellView.h; sourceTree = "<group>"; };
-		1F64B9ED1EA225600013810A /* CellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +70,8 @@
 				1F64B9D91EA1CC8E0013810A /* ViewController.m */,
 				1F64B9E91EA1CF6D0013810A /* TetrisView.h */,
 				1F64B9EA1EA1CF6D0013810A /* TetrisView.m */,
-				1F64B9EC1EA225600013810A /* CellView.h */,
-				1F64B9ED1EA225600013810A /* CellView.m */,
+				1F6250831EA467BB00EE0B30 /* TetrisOther.h */,
+				1F6250841EA467BB00EE0B30 /* TetrisOther.m */,
 				1F64B9DB1EA1CC8E0013810A /* Main.storyboard */,
 				1F64B9DE1EA1CC8E0013810A /* Assets.xcassets */,
 				1F64B9E01EA1CC8E0013810A /* LaunchScreen.storyboard */,
@@ -161,9 +161,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F6250851EA467BB00EE0B30 /* TetrisOther.m in Sources */,
 				1F64B9DA1EA1CC8E0013810A /* ViewController.m in Sources */,
 				1F64B9EB1EA1CF6D0013810A /* TetrisView.m in Sources */,
-				1F64B9EE1EA225600013810A /* CellView.m in Sources */,
 				1F64B9D71EA1CC8E0013810A /* AppDelegate.m in Sources */,
 				1F64B9D41EA1CC8E0013810A /* main.m in Sources */,
 			);
@@ -324,6 +324,7 @@
 				1F64B9E81EA1CC8E0013810A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
