@@ -76,7 +76,7 @@ typedef enum :NSInteger{
 @property (assign, nonatomic) int clearedLines;             // 消除行数
 @property (assign, nonatomic) int startupLines;             // 起始行数
 @property (assign, nonatomic) int speedLevel;               // 速度级别
-@property (assign, nonatomic) BOOL isSettingMode;           // 1-设置 0-移动
+@property (assign, nonatomic) BOOL isSettingMode;           // YES-设置 NO-移动
 
 @end
 
@@ -97,19 +97,21 @@ typedef enum :NSInteger{
     return self;
 }
 - (void)createView{
-    UIView *playView = [[UIView alloc]initWithFrame:CGRectMake(20*SCALE, 100, 210*SCALE, 400)];
+    UIView *playView = [[UIView alloc]init];
     playView.backgroundColor = [UIColor lightGrayColor];
     [self addSubview:playView];
+    [playView addSubview:self.squareRoomView];
+    playView.frame = CGRectMake(20*SCALE, 64, self.squareRoomView.frame.size.width, self.squareRoomView.frame.size.height);
     NSArray *titleArr = @[@"最高分",@"起始行",@"级别",@"下一个"];
     for (int i = 0; i<4; i++) {
         UILabel *label = [[UILabel alloc]init];
-        label.frame = CGRectMake(kScreenWidth-120*SCALE, 100+80*i, 100*SCALE, 30);
+        label.frame = CGRectMake(kScreenWidth-120*SCALE, 64+80*i, 100*SCALE, 30);
         label.font = [UIFont systemFontOfSize:15*SCALE];
         label.text = titleArr[i];
         [self addSubview:label];
     }
     for (int i = 0; i<3; i++) {
-        UITextField *text = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWidth-120*SCALE, 100+40+80*i, 100*SCALE, 40)];
+        UITextField *text = [[UITextField alloc]initWithFrame:CGRectMake(kScreenWidth-120*SCALE, 64+40+80*i, 100*SCALE, 40)];
         text.borderStyle = UITextBorderStyleRoundedRect;
         text.textAlignment = NSTextAlignmentRight;
         [self addSubview:text];
@@ -121,18 +123,17 @@ typedef enum :NSInteger{
             self.levelField = text;
         }
     }
-    
-    self.tipBoardView = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth-120*SCALE, 100+80*3+40, 100*SCALE, 100*SCALE)];
+    self.tipBoardView = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth-120*SCALE, 64+80*3+40, 60*SCALE, 60*SCALE)];
     [self addSubview:self.tipBoardView];
     
     
     self.pauseButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.pauseButton.frame = CGRectMake(kScreenWidth-120*SCALE, CGRectGetMaxY(self.tipBoardView.frame)+50, 50, 40);
+    self.pauseButton.frame = CGRectMake(kScreenWidth-120*SCALE, CGRectGetMaxY(self.tipBoardView.frame), 50, 40);
     [self.pauseButton setTitle:@"PA" forState:UIControlStateNormal];
     [self.pauseButton addTarget:self action:@selector(pause:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.pauseButton];
     self.replayButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.replayButton.frame = CGRectMake(CGRectGetMaxX(self.pauseButton.frame), CGRectGetMinX(self.pauseButton.frame), 50, 40);
+    self.replayButton.frame = CGRectMake(CGRectGetMaxX(self.pauseButton.frame), CGRectGetMinY(self.pauseButton.frame), 50, 40);
     [self.replayButton setTitle:@"RP" forState:UIControlStateNormal];
     [self.replayButton addTarget:self action:@selector(rePlay:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.replayButton];
@@ -146,7 +147,7 @@ typedef enum :NSInteger{
     [self addSubview:myCreateButton];
     
     UIButton *buttonThunderDown = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonThunderDown.frame = CGRectMake(70, CGRectGetMaxY(playView.frame), 50, 50);
+    buttonThunderDown.frame = CGRectMake(70, CGRectGetMaxY(playView.frame)+20, 50, 50);
     buttonThunderDown.layer.cornerRadius = 25;
     buttonThunderDown.clipsToBounds = YES;
     [buttonThunderDown setBackgroundColor:[UIColor grayColor]];
@@ -154,7 +155,7 @@ typedef enum :NSInteger{
     [buttonThunderDown addTarget:self action:@selector(thunderDown:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buttonThunderDown];
     UIButton *buttonLeft = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonLeft.frame = CGRectMake(20, CGRectGetMaxY(playView.frame)+50, 50, 50);
+    buttonLeft.frame = CGRectMake(20, CGRectGetMaxY(buttonThunderDown.frame), 50, 50);
     buttonLeft.layer.cornerRadius = 25;
     buttonLeft.clipsToBounds = YES;
     buttonLeft.tag = 111;
@@ -165,7 +166,7 @@ typedef enum :NSInteger{
     UILongPressGestureRecognizer *longPressLeft = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
     [buttonLeft addGestureRecognizer:longPressLeft];
     UIButton *buttonRight = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonRight.frame = CGRectMake(120, CGRectGetMaxY(playView.frame)+50, 50, 50);
+    buttonRight.frame = CGRectMake(120, CGRectGetMaxY(buttonThunderDown.frame), 50, 50);
     buttonRight.layer.cornerRadius = 25;
     buttonRight.clipsToBounds = YES;
     buttonRight.tag = 122;
@@ -176,7 +177,7 @@ typedef enum :NSInteger{
     UILongPressGestureRecognizer *longPressRight = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
     [buttonRight addGestureRecognizer:longPressRight];
     UIButton *buttonDown = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonDown.frame = CGRectMake(70, CGRectGetMaxY(playView.frame)+100, 50, 50);
+    buttonDown.frame = CGRectMake(70, CGRectGetMaxY(buttonThunderDown.frame)+50, 50, 50);
     buttonDown.layer.cornerRadius = 25;
     buttonDown.clipsToBounds = YES;
     buttonDown.tag = 133;
@@ -198,9 +199,8 @@ typedef enum :NSInteger{
 }
 
 - (void)setupUI {
-    [self addSubview:self.squareRoomView];
-    [self.squareRoomView addSubview:self.group];
-    [self.tipBoardView addSubview:self.group.tipBoard];
+    [self.squareRoomView addSubview:self.group];//显示运动的小方格
+    [self.tipBoardView addSubview:self.group.tipBoard]; //添加下一个显示样式
 }
 
 /// 进入后台时暂停游戏
@@ -722,23 +722,16 @@ typedef enum :NSInteger{
             CGRect rect2 = [self.squareRoomView convertRect:square.frame fromView:self.group];
             int X = rect2.origin.x / kSquareWH;
             int Y = rect2.origin.y / kSquareWH;
-            
             if (X == 0) return NO;
-            
             if (Y >= 0) {
                 int indexOfLeftSquare = Y * kColumnCount + X - 1;
-                
                 BasicSquare *leftSquare = self.squareRoomView.subviews[indexOfLeftSquare];
-                
                 if (leftSquare.isSelected) {
                     return NO;
                 }
-                
             }
-            
         }
     }
-    
     return YES;
 }
 
@@ -887,22 +880,21 @@ typedef enum :NSInteger{
 }
 
 #pragma mark - lazy loads
-
+//下落的格子部落
 - (UIView *)squareRoomView {
     if (!_squareRoomView) {
         
         CGFloat w = kSquareWH * kColumnCount;
         CGFloat h = kSquareWH * kRowCount;
         CGFloat x = 0;
-        CGFloat y = 100;
+        CGFloat y = 0;
         
         _squareRoomView = [[UIView alloc] init];
         _squareRoomView.frame = CGRectMake(x, y, w, h);
-        _squareRoomView.centerX = 0.5 * kScreenWidth;
-        _squareRoomView.x -= 50;
+//        _squareRoomView.centerX = 0.5 * kScreenWidth;
+//        _squareRoomView.x -= 75;
         _squareRoomView.clipsToBounds = YES;
         _squareRoomView.userInteractionEnabled = NO;
-        
         _squareRoomView.layer.borderColor = [UIColor blackColor].CGColor;
         _squareRoomView.layer.borderWidth = 1;
         
@@ -913,9 +905,9 @@ typedef enum :NSInteger{
             square.selected = NO;
             [_squareRoomView addSubview:square];
             
-            /// test
-            //            [square setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-            //            [square setTitle:[NSString stringWithFormat:@"%d", i] forState:UIControlStateNormal];
+//            // test
+//                        [square setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+//                        [square setTitle:[NSString stringWithFormat:@"%d", i] forState:UIControlStateNormal];
             
         }
     }
@@ -1213,135 +1205,6 @@ typedef enum :NSInteger{
 
 @end
 
-//
-//#define cellWith  15           //定义每一个小的方块的宽度
-//
-//@interface TetrisView ()
-//{
-//    UILabel *label;
-//}
-////大数组
-//@property (nonatomic, strong)NSMutableArray *dataArr;
-////小数组
-//@property (nonatomic, strong)NSMutableArray *tempArr;
-//@end
-//
-//@implementation TetrisView
-//
-//- (NSMutableArray *)tempArr{
-//    if (!_tempArr) {
-//        _tempArr = [NSMutableArray array];
-//    }
-//    return _tempArr;
-//}
-//- (NSMutableArray *)dataArr{
-//    if (!_dataArr) {
-//        _dataArr = [NSMutableArray array];
-//    }
-//    return _dataArr;
-//}
-//- (instancetype)initWithFrame:(CGRect)frame{
-//    self = [super initWithFrame:frame];
-//    if (self) {
-//         self.backgroundColor = [UIColor blackColor];
-//        [self createViewWithFrame:(CGRect)frame];
-//    }
-//    return self;
-//}
-//
-//- (void)createViewWithFrame:(CGRect)frame{
-//    label = [[UILabel alloc]init];
-//    label.center = CGPointMake(frame.size.width/2 ,100 );
-//    label.bounds = CGRectMake(0, 0, 100, 50);
-//    label.font = [UIFont systemFontOfSize:17];
-//    label.text = @"分数：0";
-//    label.textColor = [UIColor whiteColor];
-//    label.textAlignment = 1;
-//    [self addSubview:label];
-//    
-//    //15*25的方格
-//    UIView *gameView = [[UIView alloc]initWithFrame:CGRectMake(20, 150, cellWith*15, cellWith*25)];
-//    gameView.backgroundColor = [UIColor blackColor];
-//    gameView.layer.borderWidth = 3;
-//    gameView.layer.borderColor = [[UIColor whiteColor] CGColor];
-//    [self addSubview:gameView];
-//    for (int i = 0; i<15*25; i++) {
-//        CellView *bgView = [[CellView alloc]initWithFrame:CGRectMake(i%15*cellWith, i/15*cellWith, cellWith-0.5, cellWith-0.5)];
-//        bgView.layer.cornerRadius = 3;
-//        bgView.clipsToBounds = YES;
-//        bgView.isSelect = NO;
-//        [gameView addSubview:bgView];
-//    }
-//    
-//    
-//    
-//    UIView *lastTypeView = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-cellWith*4, 150, cellWith*4, cellWith*4)];
-//    lastTypeView.backgroundColor = [UIColor blackColor];
-//    [self addSubview:lastTypeView];
-//    for (int i = 0; i<4*4; i++) {
-//        CellView *bgView = [[CellView alloc]initWithFrame:CGRectMake(i%4*cellWith, i/4*cellWith, cellWith-0.5, cellWith-0.5)];
-//        bgView.layer.cornerRadius = 3;
-//        bgView.clipsToBounds = YES;
-//        bgView.isSelect = NO;
-//        [lastTypeView addSubview:bgView];
-//    }
-//    
-//    CGFloat buttonWidth = 70; //按钮的宽高
-//    
-//    UIView *buttonView = [[UIView alloc]initWithFrame:CGRectMake(frame.size.width-buttonWidth, CGRectGetMaxY(lastTypeView.frame)+30, buttonWidth, buttonWidth*3)];
-//    buttonView.backgroundColor = [UIColor blackColor];
-//    [self addSubview:buttonView];
-//    
-//    UIButton *buttonChange = [UIButton buttonWithType:UIButtonTypeCustom];
-//    buttonChange.frame = CGRectMake(0, 0, buttonWidth, buttonWidth-20);
-//    [buttonChange setBackgroundColor:[UIColor blackColor]];
-//    [buttonChange setTitle:@"Change" forState:UIControlStateNormal];
-//    [buttonChange addTarget:self action:@selector(buttonChange:) forControlEvents:UIControlEventTouchUpInside];
-//    [buttonView addSubview:buttonChange];
-//    
-//    UIButton *buttonLeft = [UIButton buttonWithType:UIButtonTypeCustom];
-//    buttonLeft.frame = CGRectMake(0, buttonWidth, buttonWidth, buttonWidth-20);
-//    [buttonLeft setBackgroundColor:[UIColor blackColor]];
-//    [buttonLeft setTitle:@"Left" forState:UIControlStateNormal];
-//    [buttonLeft addTarget:self action:@selector(buttonLeft:) forControlEvents:UIControlEventTouchUpInside];
-//    [buttonView addSubview:buttonLeft];
-//    
-//    UIButton *buttonRight = [UIButton buttonWithType:UIButtonTypeCustom];
-//    buttonRight.frame = CGRectMake(0, buttonWidth*2, buttonWidth, buttonWidth-20);
-//    [buttonRight setBackgroundColor:[UIColor blackColor]];
-//    [buttonRight setTitle:@"Right" forState:UIControlStateNormal];
-//    [buttonRight addTarget:self action:@selector(buttonRight:) forControlEvents:UIControlEventTouchUpInside];
-//    [buttonView addSubview:buttonRight];
-//    
-//    UIButton *buttonDown = [UIButton buttonWithType:UIButtonTypeCustom];
-//    buttonDown.frame = CGRectMake(0, buttonWidth*3, buttonWidth, buttonWidth-20);
-//    [buttonDown setBackgroundColor:[UIColor blackColor]];
-//    [buttonDown setTitle:@"Down" forState:UIControlStateNormal];
-//    [buttonDown addTarget:self action:@selector(buttonDown:) forControlEvents:UIControlEventTouchUpInside];
-//    [buttonView addSubview:buttonDown];
-//    
-//}
-////旋转
-//- (void)buttonChange:(UIButton *)sender{
-//    
-//}
-//
-////向左
-//- (void)buttonLeft:(UIButton *)sender{
-//    
-//}
-//
-////向右
-//- (void)buttonRight:(UIButton *)sender{
-//    
-//}
-//
-////加速
-//- (void)buttonDown:(UIButton *)sender{
-//    
-//}
-//
-
 
 
 /*
@@ -1352,4 +1215,3 @@ typedef enum :NSInteger{
 }
 */
 
-//@end
