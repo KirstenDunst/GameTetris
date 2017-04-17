@@ -158,11 +158,12 @@ typedef enum :NSInteger{
     buttonLeft.layer.cornerRadius = 25;
     buttonLeft.clipsToBounds = YES;
     buttonLeft.tag = 111;
-    [buttonLeft ]
     [buttonLeft setBackgroundColor:[UIColor grayColor]];
     [buttonLeft setTitle:@"L" forState:UIControlStateNormal];
     [buttonLeft addTarget:self action:@selector(left:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buttonLeft];
+    UILongPressGestureRecognizer *longPressLeft = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
+    [buttonLeft addGestureRecognizer:longPressLeft];
     UIButton *buttonRight = [UIButton buttonWithType:UIButtonTypeCustom];
     buttonRight.frame = CGRectMake(120, CGRectGetMaxY(playView.frame)+50, 50, 50);
     buttonRight.layer.cornerRadius = 25;
@@ -172,6 +173,8 @@ typedef enum :NSInteger{
     [buttonRight setTitle:@"R" forState:UIControlStateNormal];
     [buttonRight addTarget:self action:@selector(right:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buttonRight];
+    UILongPressGestureRecognizer *longPressRight = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
+    [buttonRight addGestureRecognizer:longPressRight];
     UIButton *buttonDown = [UIButton buttonWithType:UIButtonTypeCustom];
     buttonDown.frame = CGRectMake(70, CGRectGetMaxY(playView.frame)+100, 50, 50);
     buttonDown.layer.cornerRadius = 25;
@@ -181,11 +184,9 @@ typedef enum :NSInteger{
     [buttonDown setTitle:@"DW" forState:UIControlStateNormal];
     [buttonDown addTarget:self action:@selector(down:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:buttonDown];
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
-    longPress.minimumPressDuration = 0.8; //默认是0.5s
-    [buttonDown addGestureRecognizer:longPress];
-    [buttonRight addGestureRecognizer:longPress];
-    [buttonLeft addGestureRecognizer:longPress];
+    UILongPressGestureRecognizer *longPressDown = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
+    [buttonDown addGestureRecognizer:longPressDown];
+   
     
 }
 - (void)initConfigs {
@@ -243,11 +244,11 @@ typedef enum :NSInteger{
             controlAction = @selector(left:);
             duration = 0.1;
             break;
-        case 122: // down
+        case 133: // down
             controlAction = @selector(down:);
             duration = 0.03;
             break;
-        case 133: // right
+        case 122: // right
             controlAction = @selector(right:);
             duration = 0.1;
             break;
