@@ -126,7 +126,6 @@ typedef enum :NSInteger{
     self.tipBoardView = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth-120*SCALE, 64+80*3+40, 60*SCALE, 60*SCALE)];
     [self addSubview:self.tipBoardView];
     
-    
     self.pauseButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.pauseButton.frame = CGRectMake(kScreenWidth-120*SCALE, CGRectGetMaxY(self.tipBoardView.frame), 50, 40);
     [self.pauseButton setTitle:@"PA" forState:UIControlStateNormal];
@@ -480,9 +479,7 @@ typedef enum :NSInteger{
     
     // 变黑
     __block void(^refresh)() = ^{
-        
         int i = startIndex;
-        
         if (i < 0) {
             startIndex = 0;
             refresh = refreshWhite;
@@ -493,7 +490,6 @@ typedef enum :NSInteger{
             }
             startIndex = i;
         }
-        
     };
     
     self.refreshTimer = [NSTimer scheduledTimerWithTimeInterval:0.04 repeats:YES block:^(NSTimer * _Nonnull timer) {
@@ -740,13 +736,9 @@ typedef enum :NSInteger{
                 if (rightSquare.isSelected) {
                     return NO;
                 }
-                
             }
-            
-            
         }
     }
-    
     return YES;
 }
 
@@ -756,8 +748,6 @@ typedef enum :NSInteger{
 - (void)configVoice:(UIButton *)sender {
     if (_disableButtonActions) return;
     sender.selected = !sender.selected;
-    
-    
 }
 
 /// 暂停
