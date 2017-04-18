@@ -145,7 +145,6 @@ typedef enum :NSInteger{
     [myCreateButton setTitle:@"C" forState:UIControlStateNormal];
     [myCreateButton addTarget:self action:@selector(rotate:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:myCreateButton];
-    
     UIButton *buttonThunderDown = [UIButton buttonWithType:UIButtonTypeCustom];
     buttonThunderDown.frame = CGRectMake(70, CGRectGetMaxY(playView.frame)+20, 50, 50);
     buttonThunderDown.layer.cornerRadius = 25;
@@ -187,8 +186,6 @@ typedef enum :NSInteger{
     [self addSubview:buttonDown];
     UILongPressGestureRecognizer *longPressDown = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(setupKeepMoveTimer:)];
     [buttonDown addGestureRecognizer:longPressDown];
-   
-    
 }
 - (void)initConfigs {
     _startPoint = CGPointMake(kSquareWH * 4, 0);
@@ -235,10 +232,8 @@ typedef enum :NSInteger{
 /// 按住按钮持续移动的计时
 - (void)setupKeepMoveTimer:(UILongPressGestureRecognizer *)longGes {
     if (self.isSettingMode) return;
-    
     SEL controlAction = NULL;
     CGFloat duration = 0;
-    
     switch (longGes.view.tag) {
         case 111: // left
             controlAction = @selector(left:);
@@ -260,10 +255,8 @@ typedef enum :NSInteger{
     }
     
     if (longGes.state == UIGestureRecognizerStateEnded || longGes.state == UIGestureRecognizerStateFailed || longGes.state == UIGestureRecognizerStateCancelled) {
-        
         [self.keepMoveTimer invalidate];
         self.keepMoveTimer = nil;
-        
     }
 }
 
@@ -271,30 +264,21 @@ typedef enum :NSInteger{
 
 /// 将落下的方块固定
 - (void)convertGroupSquareToBlack {
-    
     // 取消下落计时
     [self destroyTimer:self.dropDownTimer];
-    
     // 固定已下落的组合
     for (int i = 0; i < self.group.subviews.count; i++) {
         BasicSquare *square = self.group.subviews[i];
-        
         if (square.selected) {
             // 将square的坐标转换到背景中
             CGRect rect2 = [self.squareRoomView convertRect:square.frame fromView:self.group];
-            
             if (rect2.origin.y >= 0) {
-                
                 int X = rect2.origin.x / kSquareWH;
                 int Y = rect2.origin.y / kSquareWH;
-                
                 int indexOfBehindSquare = Y * kColumnCount + X;
-                
                 BasicSquare *behindSquare = self.squareRoomView.subviews[indexOfBehindSquare];
-                
                 behindSquare.selected = YES;
             }
-            
         }
     }
 }
@@ -793,13 +777,12 @@ typedef enum :NSInteger{
         _disableButtonActions = NO;
         [self setupDropDownTimer];
     }
-    
-    
-    
 }
 
 /// 重玩
 - (void)rePlay:(UIButton *)sender {
+     if (_disableButtonActions) return;
+    
     if (self.isSettingMode) {
         [self startPlay];
     }else {
@@ -899,12 +882,10 @@ typedef enum :NSInteger{
         _squareRoomView.layer.borderWidth = 1;
         
         for (int i = 0; i < kColumnCount * kRowCount; i++) {
-            
             BasicSquare *square = [[BasicSquare alloc] initWithType:11];
             square.frame = CGRectMake(i % kColumnCount * kSquareWH, i / kColumnCount * kSquareWH, kSquareWH, kSquareWH);
             square.selected = NO;
             [_squareRoomView addSubview:square];
-            
 //            // test
 //                        [square setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
 //                        [square setTitle:[NSString stringWithFormat:@"%d", i] forState:UIControlStateNormal];
@@ -987,7 +968,6 @@ typedef enum :NSInteger{
         square.selected = NO;
     }
     NSArray *tip = self.tipTypes[self.tipIndex];
-    
     for (int i = 0; i < tip.count; i++) {
         int index = [tip[i] intValue];
         BasicSquare *square = self.tipView.subviews[index];
